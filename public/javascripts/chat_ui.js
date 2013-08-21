@@ -11,12 +11,15 @@ function processUserInput(chatApp, socket) {
     var message = $('#send-message').val();
     var systemMessage;
     
+    console.log('Processing user input' + message);
     if(message.charAt(0) == '/') {
+	console.log('Executing command');
 	systemMessage = chatApp.processCommand(message);
 	if(systemMessage) {
 	    $('#messages').append(divSystemContentElement(systemMessage));
 	}
     } else {
+	console.log('Sending the message to window');
 	chatApp.sendMessage($('#room').text(), message);
 	$('#messages').append(divEscapedContent(message));
 	$('#messages').scrollTop($('#messages').prop('scrollHeight'));
@@ -27,6 +30,7 @@ function processUserInput(chatApp, socket) {
 var socket = io.connect();
 
 $(document).ready(function(){
+    // creating new Chat Object
     var chatApp = new Chat(socket);
     
     socket.on('nameResult', function(result){
@@ -70,6 +74,7 @@ $(document).ready(function(){
     $('#send-message').focus();
     
     $('#send-form').submit(function() {
+	console.log('Submitting the form');
 	processUserInput(chatApp, socket);
 	return false;
     });
